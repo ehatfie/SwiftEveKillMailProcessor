@@ -41,7 +41,7 @@ public func configure(_ app: Application) async throws {
     
     try app.queues.startInProcessJobs(on: .default)
     
-//    try await app.queues.queue.dispatch(
+//    try await app.queues.queue.dispatch(a
 //        EmailJob.self,
 //        .init(to: "foo@bar.com", message: "Hello World!")
 //    )
@@ -60,6 +60,10 @@ func configureQueues(_ app: Application) {
 func setupModels(_ app: Application) {
     app.migrations.add(ZKillmailModel.ModelMigration())
     app.migrations.add(ESIKillmailModel.ModelMigration())
+    
+    app.migrations.add(CharacterIdentifiersModel.ModelMigration())
+    app.migrations.add(CorporationInfoModel.ModelMigration())
+    app.migrations.add(AllianceInfoModel.ModelMigration())
 }
 
 func setupModelsAsync(_ app: Application) async {
@@ -79,10 +83,10 @@ struct EmailJob: AsyncJob {
         print("Email Job Dequeue")
         
         //while true {
-            let foo = try await context.application.client.get("https://redisq.zkillboard.com/listen.php?queueID=YourIdHere2q3")
+            let response = try await context.application.client.get("https://redisq.zkillboard.com/listen.php?queueID=YourIdHere2q3")
             let decoder = JSONDecoder()
             
-            let data = Data(buffer: foo.body!, byteTransferStrategy: .automatic)
+            let data = Data(buffer: response.body!, byteTransferStrategy: .automatic)
             do {
                 let object = try decoder.decode(ZKillFeedResponseWrapper.self, from: data)
                // context.application.post
@@ -116,7 +120,6 @@ struct ModelJob: AsyncJob {
     typealias Payload = ZKillFeedResponseWrapper
     
     func dequeue(_ context: QueueContext, _ payload: Payload) async throws {
-        // This is where you would send the email
         let model = ESIKillmailModel(data: payload.package.killmail)
         
         do {

@@ -33,6 +33,7 @@ public enum Schemas: String {
 
     
     case corporationInfoModel = "corporationInfoModel"
+    case allianceInfoModel = "allianceInfoModel"
     
     case characterCorporationModel = "characterCorporationModel"
     
