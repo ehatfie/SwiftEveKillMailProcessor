@@ -7,6 +7,7 @@ let package = Package(
        .macOS(.v13)
     ],
     dependencies: [
+        
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.99.3"),
         // 🗄 An ORM for SQL and NoSQL databases.
@@ -33,7 +34,7 @@ let package = Package(
                 .product(name: "NIOPosix", package: "swift-nio"),
                 .product(name: "Queues", package: "queues"),
                 .product(name: "QueuesRedisDriver", package: "queues-redis-driver"),
-                .product(name: "SwiftCollections", package: "swift-collections")
+                .product(name: "Collections", package: "swift-collections")
             ],
             swiftSettings: swiftSettings
         ),
